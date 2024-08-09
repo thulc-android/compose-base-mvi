@@ -1,6 +1,5 @@
 package com.android.core.base
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -27,12 +26,12 @@ fun BaseScreen(
         content = {
             CollectEventsFromVM(flow = notifyEventsChannel) { event ->
                 when (event) {
-                    NotifyEvents.Init -> Log.e("BaseScreen", "Received initl̥")
                     is NotifyEvents.Navigate -> navigator.navigate(event.route)
-                    is NotifyEvents.ToggleLoading -> {
-                        Log.e("BaseScreen", "Event received to show progress ${event.isLoading}")
-                        DialogManager.toggleProgress(event.isLoading)
-                    }
+                    is NotifyEvents.ToggleLoading -> DialogManager.toggleProgress(event.isLoading)
+                    is NotifyEvents.ShowError -> DialogManager.showInfoDialog(
+                        title = event.title.toString(),
+                        message = event.message.toString()
+                    )
 
                     else -> Unit
                 }

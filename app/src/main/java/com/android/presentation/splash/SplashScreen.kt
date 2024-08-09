@@ -59,6 +59,14 @@ fun SplashScreen(
                             )
                         },
                 )
+                Text(
+                    text = "Progress dialog",
+                    modifier = Modifier
+                        .paddingTopBottom(AppDimens.paddingLarge)
+                        .clickable {
+                            onAction.invoke(SplashAction.CallApi)
+                        },
+                )
             }
         }
     )

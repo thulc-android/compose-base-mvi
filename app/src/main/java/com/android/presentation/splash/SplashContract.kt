@@ -30,4 +30,5 @@ data object SplashUiState
 sealed interface SplashAction {
     data object OnOpenLogin : SplashAction
     data object ShowProgressAndMove: SplashAction
+    data object CallApi: SplashAction
 }

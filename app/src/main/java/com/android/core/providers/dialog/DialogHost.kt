@@ -3,7 +3,6 @@ package com.android.core.providers.dialog
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.util.Log
 import android.view.View
 import android.view.Window
 import androidx.compose.foundation.background
@@ -12,10 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import kotlinx.coroutines.launch
@@ -43,33 +42,27 @@ fun DialogHost() {
 
     dialogEvent?.let { event ->
         when (event) {
-            is DialogEvent.ToggleProgress -> {
-                AppProgressDialog(event.canShowProgress)
-            }
+            is DialogEvent.ToggleProgress -> AppProgressDialog(event.canShowProgress)
 
-            is DialogEvent.SingleAction -> {
-                SingleActionDialog(
-                    message = event.message,
-                    onConfirm = {
-                        event.onConfirm()
-                        DialogManager.dismissDialog()
-                    }
-                )
-            }
+            is DialogEvent.SingleAction -> SingleActionDialog(
+                message = event.message,
+                onConfirm = {
+                    event.onConfirm()
+                    DialogManager.dismissDialog()
+                }
+            )
 
-            is DialogEvent.MultiAction -> {
-                MultiActionDialog(
-                    message = event.message,
-                    onConfirm = {
-                        event.onConfirm()
-                        DialogManager.dismissDialog()
-                    },
-                    onDismiss = {
-                        event.onDismiss()
-                        DialogManager.dismissDialog()
-                    }
-                )
-            }
+            is DialogEvent.MultiAction -> MultiActionDialog(
+                message = event.message,
+                onConfirm = {
+                    event.onConfirm()
+                    DialogManager.dismissDialog()
+                },
+                onDismiss = {
+                    event.onDismiss()
+                    DialogManager.dismissDialog()
+                }
+            )
 
             is DialogEvent.Info -> {
                 InfoDialog(
@@ -139,65 +132,55 @@ fun InfoDialog(message: String, onDismiss: () -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppProgressDialog(
     showDialog: Boolean,
 ) {
-    Log.e("AppProgressDialog", "showDialog: $showDialog")
     if (showDialog) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.Gray.copy(alpha = 0.5F)
-                ),
-            contentAlignment = Alignment.Center,
-            content = {
-                BasicAlertDialog(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    onDismissRequest = {},
-                    properties = DialogProperties()
-                ) {
-                    val curView = LocalView.current
-                    LaunchedEffect(curView) {
-                        tailrec fun Context.findWindow(): Window? = when (this) {
-                            is Activity -> window
-                            is ContextWrapper -> baseContext.findWindow()
-                            else -> null
-                        }
-
-                        fun View.findWindow(): Window? =
-                            (parent as? DialogWindowProvider)?.window ?: context.findWindow()
-
-                        try {
-                            val window = curView.findWindow() ?: return@LaunchedEffect
-                            val lp = window.attributes
-                            lp.dimAmount = 0.3F
-                            window.attributes = lp
-                        } catch (e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(25.dp),
-                            color = Color.Green.copy(alpha = 0.65f),
-                            strokeWidth = 3.dp,
-                            strokeCap = StrokeCap.Round,
-                            trackColor = Color.Gray.copy(alpha = 0.3f),
-                        )
-                    }
+        Dialog(
+            onDismissRequest = { },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        ) {
+            val curView = LocalView.current
+            LaunchedEffect(curView) {
+                tailrec fun Context.findWindow(): Window? = when (this) {
+                    is Activity -> window
+                    is ContextWrapper -> baseContext.findWindow()
+                    else -> null
                 }
-            },
-        )
+
+                fun View.findWindow(): Window? =
+                    (parent as? DialogWindowProvider)?.window ?: context.findWindow()
+
+                try {
+                    val window = curView.findWindow() ?: return@LaunchedEffect
+                    val lp = window.attributes
+                    lp.dimAmount = 0.3F
+                    window.attributes = lp
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .fillMaxSize()
+                    .background(White),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(25.dp),
+                    color = Color.Green.copy(alpha = 0.65f),
+                    strokeWidth = 3.dp,
+                    strokeCap = StrokeCap.Round,
+                    trackColor = Color.Gray.copy(alpha = 0.3f),
+                )
+            }
+        }
     }
 }

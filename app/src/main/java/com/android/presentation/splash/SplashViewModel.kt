@@ -19,6 +19,16 @@ class SplashViewModel @Inject constructor() : BaseVM<BaseViewState<SplashUiState
         when (action) {
             SplashAction.OnOpenLogin -> sendEvent(NotifyEvents.Navigate("login"))
             SplashAction.ShowProgressAndMove -> showFakeProgress()
+            SplashAction.CallApi -> hitApi()
+        }
+    }
+
+    private fun hitApi() {
+        viewModelScope.launch {
+            sendEvent(NotifyEvents.ToggleLoading(true))
+            delay(5000)
+            sendEvent(NotifyEvents.ToggleLoading(false))
+            sendEvent(NotifyEvents.ShowError(title = "Test", message = "Some error occurred"))
         }
     }
 
