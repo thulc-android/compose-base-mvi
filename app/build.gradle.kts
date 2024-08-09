@@ -139,6 +139,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.splashscreen)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -163,6 +164,23 @@ dependencies {
      *******************************************************/
     implementation(libs.navigation.compose)
     implementation(libs.navigation.hilt.compose)
+
+    /******************************************************
+     ***** Retrofit and Moshi
+     *******************************************************/
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.retrofit.converter.json)
+    implementation(libs.retrofit.moshi.kotlin)
+    implementation(libs.retrofit.okHttp)
+
+    /******************************************************
+     ***** Other libs
+     *******************************************************/
+    implementation(libs.utils.timber)
+
+    debugImplementation(libs.utils.chuckerDebug)
+    releaseImplementation(libs.utils.chuckerRelease)
 }
 
 fun VariantDimension.buildConfigString(key: String, value: String) {
