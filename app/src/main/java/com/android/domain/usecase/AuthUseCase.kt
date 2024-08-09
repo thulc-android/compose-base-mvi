@@ -4,8 +4,10 @@ import androidx.annotation.Keep
 import com.android.core.base.BaseUseCase
 import com.android.data.dto.response.LoginResponse
 import com.android.data.remote.common.ApiResult
+import com.android.data.remote.common.AppException
 import com.android.domain.repository.AuthRepo
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -18,7 +20,13 @@ class AuthUseCase @Inject constructor(
     @Keep
     data class RequestData(val someParameter: String)
 
-    override suspend fun execute(requestData: RequestData): ApiResult<LoginResponse> {
-        return repository.onLogin()
+    override fun execute(requestData: RequestData): Flow<ApiResult<LoginResponse>> = flow {
+        try {
+            emit(ApiResult.Loading())
+            val response = repository.onLogin()
+            emit(ApiResult.Success(response))
+        } catch (exception: AppException.CustomException) {
+            emit(ApiResult.Error(error = exception))
+        }
     }
 }

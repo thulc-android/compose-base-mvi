@@ -17,6 +17,6 @@ fun interface AuthService {
     @Api(ApiType.APP_URL)
     suspend fun login(
         @Body credentials: JsonObject,
-    ): ApiResult<LoginResponse>
+    ): LoginResponse
 
 }

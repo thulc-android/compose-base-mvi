@@ -3,6 +3,7 @@ package com.android.core.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.core.events.NotifyEvents
+import com.android.data.remote.common.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -11,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -58,5 +62,25 @@ abstract class BaseVM<STATE : BaseViewState<*>, ACTION>(
         viewModelScope.launch(mainDispatcher) {
             notifyEvents.trySend(NotifyEvents.ToggleLoading(canShowLoading))
         }
+    }
+
+    fun <T> callApi(
+        api: Flow<ApiResult<T>>,
+        onSuccess: (ApiResult.Success<T>) -> Unit = {},
+        onError: (ApiResult.Error<T>) -> Unit = {},
+    ) {
+        api.onStart {
+            toggleLoading(true)
+        }.onEach { result ->
+            toggleLoading(false)
+
+            if (result is ApiResult.Success) {
+                onSuccess.invoke(result)
+            } else if (result is ApiResult.Error) {
+                onError.invoke(result)
+            }
+        }.onCompletion {
+            toggleLoading(false)
+        }.launchIn(viewModelScope)
     }
 }

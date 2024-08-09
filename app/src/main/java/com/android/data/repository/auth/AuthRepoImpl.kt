@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AuthRepoImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthRepo {
-    override suspend fun onLogin(): ApiResult<LoginResponse> {
+    override suspend fun onLogin(): LoginResponse {
         return authService.login(JsonObject())
     }
 }

@@ -32,6 +32,7 @@ object NetworkModule {
     private const val WRITE_TIME = 60L
     private const val READ_TIME = 60L
     private const val CONNECT_TIME = 60L
+    private const val CONTENT_LENGTH = 250_000L
 
     @Provides
     @Singleton
@@ -60,7 +61,7 @@ object NetworkModule {
                     retentionPeriod = RetentionManager.Period.ONE_HOUR
                 )
             )
-            .maxContentLength(250_000L)
+            .maxContentLength(CONTENT_LENGTH)
             .redactHeaders("Auth-Token", "Bearer")
             .alwaysReadResponseBody(true)
             .build()
@@ -110,7 +111,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit.Builder {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(
@@ -122,6 +123,6 @@ object NetworkModule {
                         .setLenient()
                         .create()
                 )
-            )
+            ).build()
     }
 }

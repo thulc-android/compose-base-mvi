@@ -7,5 +7,5 @@ import com.android.data.remote.common.ApiResult
  * Created by ThulasiRajan.P on 5/8/2024
  */
 fun interface AuthRepo {
-    suspend fun onLogin(): ApiResult<LoginResponse>
+    suspend fun onLogin(): LoginResponse
 }
