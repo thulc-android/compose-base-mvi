@@ -10,4 +10,9 @@ object AppDimens {
     val paddingMedium = 8.dp
     val paddingSmall = 4.dp
     val paddingMin = 2.dp
+
+    val spaceMedium = 16.dp
+    val spaceLarge = 24.dp
+
+    val splashLogoSize = 150.dp
 }
