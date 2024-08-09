@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.android.core.extension.paddingStartEnd
 import com.android.core.extension.paddingTopBottom
+import com.android.core.previews.DeviceCompatPreviews
+import com.android.core.previews.FontScalePreviews
 import com.android.core.previews.ThemedPreviews
 import com.android.core.providers.dialog.DialogManager
 import com.android.core.resource.AppDimens
@@ -73,6 +75,7 @@ fun SplashScreen(
 }
 
 @ThemedPreviews
+@DeviceCompatPreviews
 @Composable
 fun SplashScreenPreview() {
     SplashScreen(onAction = {})
