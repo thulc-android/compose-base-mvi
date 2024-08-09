@@ -1,20 +1,38 @@
 package com.android.presentation.splash
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import com.android.core.dispatcher.IoDispatcher
+import androidx.lifecycle.viewModelScope
+import com.android.core.base.BaseVM
+import com.android.core.base.BaseViewState
+import com.android.core.events.NotifyEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * Created by ThulasiRajan.P on 5/8/2024
  */
 @HiltViewModel
-class SplashViewModel @Inject constructor(
-    val savedStateHandle: SavedStateHandle,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : ViewModel() {
+class SplashViewModel @Inject constructor() : BaseVM<BaseViewState<SplashUiState>, SplashAction>() {
 
+    override fun onTriggerEvent(action: SplashAction) {
+        when (action) {
+            SplashAction.OnOpenLogin -> sendEvent(NotifyEvents.Navigate("login"))
+            SplashAction.ShowProgressAndMove -> showFakeProgress()
+        }
+    }
 
+    private fun showFakeProgress() {
+        viewModelScope.launch {
+            sendEvent(NotifyEvents.ToggleLoading(true))
+
+            delay(5000)
+
+            sendEvent(NotifyEvents.ToggleLoading(false))
+
+            delay(500)
+
+            sendEvent(NotifyEvents.Navigate("login"))
+        }
+    }
 }

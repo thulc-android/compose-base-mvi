@@ -155,10 +155,14 @@ dependencies {
     /******************************************************
      ***** DI - Hilt
      *******************************************************/
-
-    implementation(libs.di.hilt.compose)
     implementation(libs.di.hilt.android)
     ksp(libs.di.hilt.compiler)
+
+    /******************************************************
+     ***** Navigation
+     *******************************************************/
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.hilt.compose)
 }
 
 fun VariantDimension.buildConfigString(key: String, value: String) {

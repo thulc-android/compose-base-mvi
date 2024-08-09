@@ -1,28 +1,33 @@
 package com.android.presentation.splash
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.delay
+import com.android.core.base.BaseScreen
 
 /**
  * Created by ThulasiRajan.P on 5/8/2024
  */
 @Composable
-fun SplashContract(
-    onOpenLogin: () -> Unit,
-    onOpenDashboard: () -> Unit,
-) {
+fun SplashContract() {
     val viewModel: SplashViewModel = hiltViewModel<SplashViewModel>()
 
-    //by this we can also pass data to the VM savedState
-    // and can access in the VM
-    viewModel.savedStateHandle["LaunchDone"] = true
+    BaseScreen(
+        notifyEventsChannel = viewModel.notifyEventsChannel,
+        content = {
+            SplashScreen(
+                onAction = { event ->
+                    viewModel.onTriggerEvent(event)
+                }
+            )
+        },
+    )
+}
 
-    LaunchedEffect(Unit) {
-        delay(1500)
-        onOpenDashboard.invoke()
-    }
+@Stable
+data object SplashUiState
 
-    SplashScreen()
+sealed interface SplashAction {
+    data object OnOpenLogin : SplashAction
+    data object ShowProgressAndMove: SplashAction
 }

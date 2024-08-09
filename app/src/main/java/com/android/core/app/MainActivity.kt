@@ -7,13 +7,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.compose.rememberNavController
-import com.android.core.navigtation.AppNavGraph
 import com.android.core.navigtation.LocalNavigationManager
 import com.android.core.navigtation.NavigationProvider
+import com.android.core.navigtation.graphs.AppNavGraph
+import com.android.core.providers.LocalSpacingProvider
 import com.android.core.providers.LocalStringProvider
+import com.android.core.providers.Spacing
 import com.android.core.providers.StringProvider
 import com.android.core.resource.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,8 @@ fun MainApp() {
 
     CompositionLocalProvider(
         LocalNavigationManager provides NavigationProvider(navController),
-        LocalStringProvider provides StringProvider()
+        LocalStringProvider provides StringProvider(),
+        LocalSpacingProvider provides Spacing(),
     ) {
         AppNavGraph(navController)
     }

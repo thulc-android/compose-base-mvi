@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.android.core.extension.paddingStartEnd
 import com.android.core.extension.paddingTopBottom
+import com.android.core.previews.FontScalePreviews
 import com.android.core.previews.ThemedPreviews
 import com.android.core.resource.AppDimens
 import com.android.core.resource.AppIcons
@@ -40,6 +41,7 @@ fun LoginScreen() {
 }
 
 @ThemedPreviews
+@FontScalePreviews
 @Composable
 fun LoginScreenPreview() {
     LoginScreen()
