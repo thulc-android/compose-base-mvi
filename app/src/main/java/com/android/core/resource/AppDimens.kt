@@ -15,4 +15,6 @@ object AppDimens {
     val spaceLarge = 24.dp
 
     val splashLogoSize = 150.dp
+
+    val paddingLargeLoginScreen = 24.dp
 }

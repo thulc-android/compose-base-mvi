@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.protobuf)
     alias(libs.plugins.sonarqube)
     alias(libs.plugins.firebase.crashlitycs)
+    alias(libs.plugins.kotlin.serialization)
 //    alias(libs.plugins.gms.googleServices)
 }
 
@@ -164,6 +165,7 @@ dependencies {
      *******************************************************/
     implementation(libs.navigation.compose)
     implementation(libs.navigation.hilt.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     /******************************************************
      ***** Retrofit and Moshi

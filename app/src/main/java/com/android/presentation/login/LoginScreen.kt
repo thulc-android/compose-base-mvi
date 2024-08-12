@@ -26,6 +26,7 @@ import com.android.core.extension.paddingTop
 import com.android.core.extension.paddingTopBottom
 import com.android.core.previews.ThemedPreviews
 import com.android.core.resource.AppDimens
+import com.android.presentation.login.helpers.MockData
 
 /**
  * Created by ThulasiRajan.P on 5/8/2024
@@ -36,6 +37,8 @@ fun LoginScreen(
 ) {
     val email by remember { mutableStateOf(TextFieldValue()) }
     val password by remember { mutableStateOf(TextFieldValue()) }
+
+    BuildList()
 
     Box(
         modifier = Modifier
@@ -79,7 +82,7 @@ fun LoginScreen(
                 )
 
                 TextField(
-                    modifier = Modifier.paddingTop(AppDimens.paddingLarge),
+                    modifier = Modifier.paddingTop(AppDimens.paddingLargeLoginScreen),
                     value = password,
                     onValueChange = { value ->
                         if (value.text.isNotEmpty()) {
@@ -116,6 +119,14 @@ fun LoginScreen(
             }
         }
     )
+}
+
+@Composable
+fun BuildList() {
+    val list by remember { mutableStateOf(MockData.listOfItemSupport)  }
+    Column {
+
+    }
 }
 
 @ThemedPreviews

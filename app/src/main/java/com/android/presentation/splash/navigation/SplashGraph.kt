@@ -3,14 +3,16 @@ package com.android.presentation.splash.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.android.presentation.splash.SplashContract
+import kotlinx.serialization.Serializable
 
 /**
  * Created by ThulasiRajan.P on 5/8/2024
  */
-const val SPLASH = "splash"
+@Serializable
+data object SplashScreen
 
 internal fun NavGraphBuilder.splashScreen() {
-    composable(SPLASH) {
+    composable<SplashScreen> {
         SplashContract()
     }
 }

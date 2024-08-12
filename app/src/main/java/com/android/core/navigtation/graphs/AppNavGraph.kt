@@ -9,7 +9,7 @@ import com.android.core.navigtation.anim.screenSlideIn
 import com.android.core.navigtation.anim.screenSlideOut
 import com.android.core.providers.dialog.DialogHost
 import com.android.presentation.login.navigation.loginScreen
-import com.android.presentation.splash.navigation.SPLASH
+import com.android.presentation.splash.navigation.SplashScreen
 import com.android.presentation.splash.navigation.splashScreen
 
 /**
@@ -19,15 +19,13 @@ import com.android.presentation.splash.navigation.splashScreen
 fun AppNavGraph(mainController: NavHostController) {
     NavHost(
         navController = mainController,
-        startDestination = SPLASH,
+        startDestination = SplashScreen,
         enterTransition = { screenSlideIn() },
         exitTransition = { screenFadeOut() },
         popEnterTransition = { screenFadeIn() },
         popExitTransition = { screenSlideOut() },
     ) {
         splashScreen()
-
-//        buildBottomScreens(mainController)
 
         loginScreen()
     }

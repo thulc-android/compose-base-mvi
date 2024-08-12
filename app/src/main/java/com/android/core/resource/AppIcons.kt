@@ -8,5 +8,5 @@ import com.kkCasino.R
  */
 object AppIcons {
     val launcherForeGround: Int = R.drawable.ic_launcher_foreground
-    val launcherBackGround: Int = R.drawable.ic_launcher_background
+    val launcherBackGround: Int = R.drawable.ic_launcher_foreground
 }
